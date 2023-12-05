@@ -9,6 +9,7 @@
         * {
             margin: 0;
             padding: 0;
+            font-family: monospace;
         }
 
         #back_ground {
@@ -20,7 +21,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url(https://img.freepik.com/premium-vector/mountain-landscape-with-night-sky-illustration_105940-365.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1698969600&semt=ais);
+            background-image: url("https://img.freepik.com/premium-vector/mountain-landscape-with-night-sky-illustration_105940-365.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1698969600&semt=ais");
             background-size: 100%;
         }
 
@@ -38,14 +39,21 @@
             color: white;
         }
 
-        #quiz_window {
+        #quiz_window,
+        #points_window {
             width: 100%;
             height: 100%;
-            display: flex;
+            display: none;
             justify-content: flex-start;
             align-items: center;
             flex-flow: column;
-            
+            transition: opacity 0.25s ease;
+        }
+
+        #points_window {
+            display: flex;
+            justify-content: center;
+            flex-flow: wrap;
         }
 
         #question_part {
@@ -76,8 +84,8 @@
             gap: 0px 5px;
             /* border: solid 1px red; */
         }
-        
-        .question_navigate_buttons{
+
+        .question_navigate_buttons {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -88,7 +96,8 @@
             border-radius: 1px;
             /* border: solid 1px red; */
         }
-        .question_navigate_buttons:hover{
+
+        .question_navigate_buttons:hover {
             background-color: rgba(0, 0, 0, 0.349);
 
         }
@@ -138,8 +147,69 @@
             display: none;
         }
 
-        .question_awnser{
+        .question_awnser {
             border: solid 0.1px white;
+        }
+
+        #user_score_info {
+            width: 40%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+            border: 2px solid black;
+        }
+
+        #global_score_info {
+            width: 0;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid black;
+            transition: width 0.25s ease;
+        }
+
+        #global_score_info>* {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        #up_score_part {
+            width: 100%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+            border: 2px solid black;
+        }
+
+        #down_score_part {
+            width: 100%;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column;
+            border: 2px solid black;
+        }
+
+        #down_score_percent {
+            width: 60%;
+            height: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50pt;
+            font-weight: bold;
+            border: 2px solid black;
+        }
+
+        #down_score_med {
+            transition: margin-bottom 0.25s ease;
         }
     </style>
 </head>
@@ -147,7 +217,7 @@
 <body>
     <div id="back_ground">
         <div id="user_window">
-            <div id="quiz_window">
+            <div class="user_window" id="quiz_window">
                 <div id="question_part">
                     <div id="question_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum maiores
                         harum, dolorum alias quisquam repellat, vitae nostrum adipisci error ratione, dicta magni dolor
@@ -180,13 +250,35 @@
                     </div>
                 </div>
             </div>
-            <div id="points_window"></div>
+            <div class="user_window" id="points_window">
+                <div id="user_score_info">
+                    <div id="up_score_part">
+                        <div id="up_score_tittle">
+                            <p>Congratulations!</p>
+                            <p>You has finished the quiz</p>
+                        </div>
+                    </div>
+                    <div id="down_score_part">
+                        <div id="down_score_percent">100%</div>
+                        <div id="down_score_med">(05/05)</div>
+                        <div id="open_global_score" onclick="open_global_window(this)">View Rank</div>
+                    </div>
+                </div>
+                <div id="global_score_info">
+                    <div>a</div>
+                </div>
+            </div>
         </div>
     </div>
     <script>
         var question_awnser = document.getElementsByClassName("question_awnser")
+        var user_window = document.getElementsByClassName("user_window")
         var question_navigate_buttons = document.getElementsByClassName("question_navigate_buttons")
         var question_text = document.getElementById("question_text")
+        var down_score_percent = document.getElementById("down_score_percent")
+        var down_score_med = document.getElementById("down_score_med")
+        var global_score_info = document.getElementById("global_score_info")
+        var global_window_setter = true
         var questions_list = [
             { text: 0, awnser: [{ correct: 1, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 },] },
             { text: 1, awnser: [{ correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 }, { correct: 0, awnser_text: 0 },] },
@@ -199,6 +291,18 @@
         var questions_marked = []
         var awnser_score = [0, 0, 0, 0, 0]
         var user_score = 0
+        function open_global_window(element) {
+            if (global_window_setter) {
+                element.style.opacity = 0
+                global_score_info.style.width = "40%"
+                setTimeout(() => {
+                    for (var i = 0; i <= global_score_info.children.length - 1; i++) {
+                        global_score_info.children[i].style.display = "flex"
+                        global_score_info.children[i].style.opacity = 1
+                    }
+                }, 500);
+            }
+        }
         function awnsering(element) {
             for (var i = 0; i <= question_awnser.length - 1; i++) {
                 question_awnser[i].style.backgroundColor = "transparent"
@@ -283,6 +387,27 @@
                     user_score += awnser_score[i]
                 }
                 rank_taker(true)
+                var user_percent = (user_score * 100) / 5
+                user_window[0].style.opacity = 0
+                setTimeout(() => {
+                    var interval_velocity = 10
+                    var percent_number = 0
+                    user_window[0].style.display = "none"
+                    user_window[1].style.display = "flex"
+                    user_window[1].style.opacity = 1
+                    down_score_med.innerHTML = `(0${user_score}/05)`
+                    var percent_interval = setInterval(() => {
+                        percent_number++
+                        down_score_percent.innerHTML = `${percent_number < 10 ? "0" + percent_number : percent_number}%`
+                        if (percent_number % Number.parseInt(user_percent * 0.05) == 0) {
+                            interval_velocity += 15
+                        }
+                        if (percent_number == user_percent) {
+                            clearInterval(percent_interval)
+                            down_score_med.style.marginBottom = "20px"
+                        }
+                    }, interval_velocity);
+                }, 250);
             }
         }
         async function rank_taker(action) {
