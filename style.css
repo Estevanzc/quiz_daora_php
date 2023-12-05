@@ -12,10 +12,9 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('https://img.freepik.com/fotos-gratis/linhas-brilhantes-na-forma-3d-do-coracao-humano-em-fundo-escuro-generativo-ai_191095-1435.jpg') no-repeat;
+    background: url("https://img.freepik.com/premium-vector/mountain-landscape-with-night-sky-illustration_105940-365.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1698969600&semt=ais") no-repeat;
     background-size: cover;
     background-position: center;
-
 }
 
 form{

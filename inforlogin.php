@@ -7,8 +7,8 @@ if (file_exists("data.txt")) {
     $player_permisson = true;
     foreach ($data as $players) {
         if ($players[0] == $player) {
-            print_r($players);
-            echo $player;
+            //print_r($players);
+            //echo $player;
             $player_permisson = false;
         }
     }
