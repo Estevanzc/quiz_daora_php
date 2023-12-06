@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("https://img.freepik.com/premium-vector/mountain-landscape-with-night-sky-illustration_105940-365.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1698969600&semt=ais") no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+form {
+    background-color: transparent;
+    border: 2px solid rgb(214, 200, 214);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    width: 420px;
+    color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+}
+
+form h1 {
+    font-size: 36px;
+    text-align: center;
+}
+
+form .input-local {
+    width: 100%;
+    height: 35px;
+    margin: 30px 0;
+}
+
+.input-local input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgb(212, 197, 197);
+    border-radius: 40px;
+    font-size: 16px;
+    color: white;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-local input::placeholder {
+    color: white;
+}
+
+form .btn {
+    width: 100%;
+    height: 35px;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px black;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
